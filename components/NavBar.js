@@ -1,7 +1,9 @@
 import React, {
   StyleSheet,
   Component,
-  PropTypes
+  PropTypes,
+  View,
+  SegmentedControlIOS
 } from 'react-native'
 
 import NavigationBar from 'react-native-navbar'
@@ -13,6 +15,13 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     backgroundColor: '#fff',
     opacity: .98
+  },
+  segmentWrap: {
+    width: 200,
+    marginBottom: 2
+  },
+  segment: {
+    height: 24
   }
 })
 
@@ -22,19 +31,20 @@ const styles = StyleSheet.create({
 export default class NavBar extends Component {
 
   render() {
-    let hasClose = !!this.props.close;
-    let hasEdit = !!this.props.edit;
-    let hasBack = !!this.props.back;
+    let hasClose = !!this.props.close
+    let hasEdit = !!this.props.edit
+    let hasBack = !!this.props.back
+    let hasSegment = this.props.segmentValues && this.props.segmentValues.length > 0
 
     // 有关闭按钮时，其它均不显示
     if (hasClose) {
-      hasBack = false;
-      hasEdit = false;
+      hasBack = false
+      hasEdit = false
     }
 
     // 有编辑按钮时，不能有关闭按钮
     if (hasEdit) {
-      hasClose = false;
+      hasClose = false
     }
 
     let buttons = {}
@@ -45,12 +55,28 @@ export default class NavBar extends Component {
       buttons.rightButton = <NavButton name={hasClose ? 'close' : 'edit'} position="right"/>
     }
 
+    let title = {
+      title: this.props.title,
+      tintColor: '#030303'
+    }
+    if (hasSegment) {
+      title = this.renderSegment()
+    }
+
     return (
       <NavigationBar
-        title={{title: this.props.title, tintColor: '#030303'}}
+        title={title}
         style={styles.nav}
         {...buttons}
       />
+    )
+  }
+
+  renderSegment() {
+    return (
+      <View style={styles.segmentWrap}>
+        <SegmentedControlIOS values={this.props.segmentValues} selectedIndex={0} style={styles.segment}/>
+      </View>
     )
   }
 

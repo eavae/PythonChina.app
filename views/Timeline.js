@@ -16,8 +16,7 @@ import React, {
 import { TIMELINE_URL, HOME_URL, DEFAULT_AVATAR } from '../config'
 import Topic from './Topic'
 import Login from '../components/Login'
-
-var base64Icon = 'data:image/png;base64,';
+import NavBar from '../components/NavBar'
 
 var Timeline = createClass({
   getInitialState () {
@@ -41,27 +40,28 @@ var Timeline = createClass({
       fetcher = this._fetchHomeData
     }
     return (
-      <ScrollView showsVerticalScrollIndicator={false}
-          style={{flex: 1}}
-          refreshControl={
-            <RefreshControl
+      <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
+        <NavBar title="首页" segmentValues={['我的关注', '所有话题']}/>
+        {
+          this.state.cursor &&
+          <ListView
+            showsVerticalScrollIndicator={false}
+            style={styles.listView}
+            dataSource={this.state.data}
+            renderRow={this.renderTopic}
+            refreshControl={
+              <RefreshControl
                 refreshing={this.state.isRefreshing}
-                onRefresh={fetcher}
+                onRefresh={this._fetchAllData}
                 tintColor="#ff0000"
                 title="Loading..."
                 colors={['#ff0000', '#00ff00', '#0000ff']}
                 progressBackgroundColor="#ffff00"
-              />
-          }>
-          {
-            this.state.cursor &&
-                <ListView style={styles.listView}
-                    dataSource={this.state.data}
-                    renderRow={this.renderTopic}>
-                </ListView>
-                || this.renderLoadingView()
-          }
-      </ScrollView>
+                />
+            }
+          /> || this.renderLoadingView()
+        }
+      </View>
     );
   },
   _renderAll () {
@@ -72,45 +72,6 @@ var Timeline = createClass({
   },
   componentDidMount () {
     this._fetchData(TIMELINE_URL);
-  },
-  _renderTab () {
-    return <TabBarIOS
-        tintColor="blue"
-        barTintColor="white">
-      <TabBarIOS.Item
-          title="All"
-          icon={{uri: base64Icon, scale: 3}}
-          selected={this.state.selectedTab === 'all'}
-          onPress={() => {
-            this.setState({
-              selectedTab: 'all',
-            })
-          }}>
-        {this._renderAll()}
-      </TabBarIOS.Item>
-      <TabBarIOS.Item
-          title="Home"
-          icon={{uri: base64Icon, scale: 3}}
-          selected={this.state.selectedTab === 'home'}
-          onPress={() => {
-            this.setState({
-              selectedTab: 'home',
-            })
-          }}>
-        {this._renderHome()}
-      </TabBarIOS.Item>
-      <TabBarIOS.Item
-          title="Me"
-          icon={{uri: base64Icon, scale: 3}}
-          selected={this.state.selectedTab === 'me'}
-          onPress={() => {
-            this.setState({
-              selectedTab: 'me',
-            })
-          }}>
-        {this._renderLogin()}
-      </TabBarIOS.Item>
-    </TabBarIOS>
   },
   _renderLogin () {
     return (
@@ -176,7 +137,8 @@ var Timeline = createClass({
   _handelRsp (rsp) {
     this.setState({
       data: this.state.data.cloneWithRows(rsp.data),
-      cursor: true
+      cursor: true,
+      isRefreshing: false
     });
   },
   jumpToTopic (id) {
@@ -246,8 +208,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   listView: {
-    backgroundColor: '#f5fdfd',
-    paddingTop: 30,
+    flex: 1,
+    backgroundColor: '#f5fdfd'
   }
 });
 

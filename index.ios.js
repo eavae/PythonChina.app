@@ -34,30 +34,27 @@ class App extends React.Component {
   render () {
     return (
       <Router>
-        <Scene key="route">
-          <Scene key="home" tabs={true} default="topic" style={styles.tab}>
-            <Scene
-              key="topic"
-              title="首页"
-              icon={TabIcon}
-              component={Timeline}
-              navigationBarStyle={{backgroundColor:'#fff'}}
-              titleStyle={{color:'white'}}
-              initial={true}
-              navBar={NavBar} />
-            <Scene key="discover"
-              title="发现"
-              navBar={NavBar}
-              icon={TabIcon}
-              component={Cafe} />
-            <Scene
-              key="me"
-              title="我的"
-              navBar={NavBar}
-              icon={TabIcon}
-              component={Me} />
-          </Scene>
-          <Scene key="login" component={Login} type="jump" title="登录"/>
+        <Scene key="home" tabs={true} default="topic" style={styles.tab}>
+          <Scene
+            segmentValues={['我的关注', '所有话题']}
+            key="topic"
+            title="首页"
+            icon={TabIcon}
+            component={Timeline}
+            titleStyle={{color:'white'}}
+            initial={true}
+            navBar={NavBar} />
+          <Scene key="discover"
+            title="发现"
+            navBar={NavBar}
+            icon={TabIcon}
+            component={Cafe} />
+          <Scene
+            key="me"
+            title="我的"
+            navBar={NavBar}
+            icon={TabIcon}
+            component={Me} />
         </Scene>
       </Router>
     )
