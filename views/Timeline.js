@@ -151,10 +151,9 @@ var Timeline = createClass({
   },
   _fetchData (apiUrl) {
     this.setState({isRefreshing: true});
-    console.log('fetching', apiUrl)
     return fetch(apiUrl)
       .then(rsp => rsp.json())
-      .then(data => {this._handelRsp(data);console.log(data)})
+      .then(data => {this._handelRsp(data);})
       .catch(
         error =>
           this.setState({
@@ -175,7 +174,6 @@ var Timeline = createClass({
     return this._fetchData(HOME_URL)
   },
   _handelRsp (rsp) {
-    console.log(rsp)
     this.setState({
       data: this.state.data.cloneWithRows(rsp.data),
       cursor: true

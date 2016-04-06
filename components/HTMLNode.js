@@ -40,17 +40,14 @@ class HTMLNode extends Component {
     if (reg.links.link.test(url)) {
       if (regs.links.topic.test(url)) {
         let topicId = url.replace(/^https?:\/\/python-china\.org\/topic\//, '')
-        console.log(topicId)
       }
 
       if (regs.links.user.test(url)) {
         let userName = url.replace(/^https?:\/\/python-china\.org\/user\//, '')
-        console.log(userName)
       }
     }
 
     if (/^mailto:\w*/.test(url)) {
-      console.log('A mail!')
     }
   }
   _renderNode(node, index, parent, type) {

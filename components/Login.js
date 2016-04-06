@@ -29,7 +29,6 @@ var Login = createClass({
       body: JSON.stringify({permanent:true})
     })
     .then((json) => {
-      console.log(json)
     })
   },
   render () {

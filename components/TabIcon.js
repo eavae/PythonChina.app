@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 })
 
 export default class TabIcon extends Component {
-    render(){
+    render() {
         const map = {
           topic: 'home',
           discover: 'compass',
