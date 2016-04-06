@@ -17,18 +17,19 @@ import { TIMELINE_URL, HOME_URL, DEFAULT_AVATAR } from '../config'
 import Topic from './Topic'
 import Login from '../components/Login'
 import NavBar from '../components/NavBar'
+import TopicList from '../components/TopicList'
 
 var Timeline = createClass({
-  getInitialState () {
-    return {
-      isRefreshing: false,
-      data: new ListView.DataSource({
-        rowHasChanged (row1, row2) {return row1 !== row2}
-      }),
-      selectedTab: 'all',
-      cursor: null
-    }
-  },
+  // getInitialState () {
+  //   return {
+  //     isRefreshing: false,
+  //     data: new ListView.DataSource({
+  //       rowHasChanged (row1, row2) {return row1 !== row2}
+  //     }),
+  //     selectedTab: 'all',
+  //     cursor: null
+  //   }
+  // },
   render () {
     return this._renderHome()
   },
@@ -42,25 +43,7 @@ var Timeline = createClass({
     return (
       <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
         <NavBar title="首页" segmentValues={['我的关注', '所有话题']}/>
-        {
-          this.state.cursor &&
-          <ListView
-            showsVerticalScrollIndicator={false}
-            style={styles.listView}
-            dataSource={this.state.data}
-            renderRow={this.renderTopic}
-            refreshControl={
-              <RefreshControl
-                refreshing={this.state.isRefreshing}
-                onRefresh={this._fetchAllData}
-                tintColor="#ff0000"
-                title="Loading..."
-                colors={['#ff0000', '#00ff00', '#0000ff']}
-                progressBackgroundColor="#ffff00"
-                />
-            }
-          /> || this.renderLoadingView()
-        }
+        <TopicList url={TIMELINE_URL}/>
       </View>
     );
   },

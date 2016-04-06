@@ -11,7 +11,6 @@ import {Actions, Scene, Router} from 'react-native-router-flux'
 
 import Timeline from './views/Timeline'
 import Login from './components/Login'
-import TabView from './components/TabView'
 import TabIcon from './components/TabIcon'
 import NavBar from './components/NavBar'
 import Cafe from './views/Cafe'
