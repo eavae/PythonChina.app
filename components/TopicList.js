@@ -16,6 +16,9 @@ const styles = StyleSheet.create({
   }
 })
 
+/**
+ * 话题列表组件
+ */
 export default class TopicList extends Component {
   constructor(props, ctx) {
     super(props, ctx)
