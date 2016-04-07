@@ -7,9 +7,12 @@ import React, {
   Text
 } from 'react-native'
 
+import TopicCard from './TopicCard'
+
 const styles = StyleSheet.create({
   listView: {
-    flex: 1
+    flex: 1,
+    backgroundColor: '#eee'
   }
 })
 
@@ -50,7 +53,13 @@ export default class TopicList extends Component {
       )
     }
     // 这里应该显示一个正在加载中的页面
-    return <View/>
+    return (
+      <View>
+        <Text>
+          加载中
+        </Text>
+      </View>
+    )
   }
 
   fetchData() {
@@ -73,7 +82,10 @@ export default class TopicList extends Component {
     }).catch(e => console.log(e))
   }
 
-  renderRow() {
-    return <Text>Hello Row</Text>
+  renderRow(topic) {
+    console.log(topic)
+    return (
+      <TopicCard data={topic}/>
+    )
   }
 }
