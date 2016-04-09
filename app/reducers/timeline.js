@@ -6,7 +6,9 @@ import {
   SWITCH_TIMELINE_SEGMENT,
   INVALIDATE_TIMELINE,
   REQUEST_TIMELINE,
-  RECEIVE_TIMELINE
+  REQUEST_MORE_TIMELINE,
+  RECEIVE_TIMELINE,
+  RECEIVE_MORE_TIMELINE
 } from '../actions/actionTypes'
 
 // const initialState = {
@@ -57,7 +59,20 @@ function topics(state = {
       return {
         isFetching: false,
         didInvalidate: false,
-        items: action.topics,
+        items: action.items,
+        lastUpdated: action.receivedAt,
+        cursor: action.cursor
+      }
+    case REQUEST_MORE_TIMELINE:
+      return {
+        ...state,
+        isFetching: true
+      }
+    case RECEIVE_MORE_TIMELINE:
+      return {
+        isFetching: false,
+        didInvalidate: false,
+        items: [...state.items, ...action.items],
         lastUpdated: action.receivedAt,
         cursor: action.cursor
       }
@@ -71,6 +86,8 @@ function timeline(state = {}, action) {
     case INVALIDATE_TIMELINE:
     case REQUEST_TIMELINE:
     case RECEIVE_TIMELINE:
+    case REQUEST_MORE_TIMELINE:
+    case RECEIVE_MORE_TIMELINE:
       return {
         ...state,
         [action.segment]: topics(state[action.segment], action)
