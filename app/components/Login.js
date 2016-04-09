@@ -10,7 +10,7 @@ import React, {
   TextInput
 } from 'react-native';
 
-import { LOGIN_URL } from '../config'
+import { LOGIN_URL } from '../configs/url'
 
 var Login = createClass({
   getInitialState () {

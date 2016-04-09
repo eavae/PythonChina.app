@@ -8,6 +8,7 @@ import React, {
 
 import NavigationBar from 'react-native-navbar'
 import NavButton from './NavButton'
+import {switchSegment} from '../actions/timelineActions'
 
 const styles = StyleSheet.create({
   nav: {
@@ -47,6 +48,7 @@ export default class NavBar extends Component {
       hasClose = false
     }
 
+    // 渲染按钮
     let buttons = {}
     if (hasBack) {
       buttons.leftButton = <NavButton name="back" position="left"/>
@@ -55,6 +57,7 @@ export default class NavBar extends Component {
       buttons.rightButton = <NavButton name={hasClose ? 'close' : 'edit'} position="right"/>
     }
 
+    // 标题
     let title = {
       title: this.props.title,
       tintColor: '#030303'
@@ -75,9 +78,23 @@ export default class NavBar extends Component {
   renderSegment() {
     return (
       <View style={styles.segmentWrap}>
-        <SegmentedControlIOS values={this.props.segmentValues} selectedIndex={0} style={styles.segment}/>
+        <SegmentedControlIOS
+          values={this.props.segmentValues}
+          selectedIndex={this.props.segment}
+          style={styles.segment}
+          onChange={(e) => this.onChange(e)}/>
       </View>
     )
+  }
+
+  onChange(event) {
+    const key = this.props.sceneKey.split('-')[0]
+    if (key === 'timeline') {
+      const {dispatch} = this.props
+      const index = event.nativeEvent.selectedSegmentIndex
+
+      dispatch(switchSegment(index))
+    }
   }
 
   static propTypes = {

@@ -111,8 +111,8 @@ export default class TopicCard extends Component {
 
   render() {
     const data = this.props.data
-    let createTime = moment(data.created_at).fromNow()
-    let nodes = data.cafes.slice(0, 3)
+    let createTime = moment(data.createdAt).fromNow()
+    let nodes = (data.cafes || []).slice(0, 3)
 
     // 用于测试node节点多余1个的情况
     // let nodes = [{
@@ -128,7 +128,7 @@ export default class TopicCard extends Component {
         <View style={styles.header}>
           <View style={styles.headerLeft}>
             <UserAvatar
-              url={data.user.avatar_url}
+              url={data.user.avatarUrl}
               size={46}/>
             <View style={styles.user}>
               <Text style={styles.username}>{data.user.name}</Text>
@@ -155,9 +155,9 @@ export default class TopicCard extends Component {
         </View>
         <View style={styles.footWrap}>
           <TopicUGCBrief
-            viewCount={data.read_count}
-            commentCount={data.comment_count}
-            likeCount={data.like_count}
+            viewCount={data.readCount}
+            commentCount={data.commentCount}
+            likeCount={data.likeCount}
             topicId={data.id}
           />
         </View>

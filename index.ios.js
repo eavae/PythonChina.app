@@ -7,14 +7,21 @@ import React, {
   StyleSheet
 } from 'react-native'
 
-import {Actions, Scene, Router} from 'react-native-router-flux'
+import {Actions, Scene, Router, Switch} from 'react-native-router-flux'
+import {Provider, connect} from 'react-redux'
+import thunkMiddleware from 'redux-thunk'
+import createLogger from 'redux-logger'
+import {createStore, applyMiddleware} from 'redux'
 
-import Timeline from './views/Timeline'
-import Login from './components/Login'
-import TabIcon from './components/TabIcon'
-import NavBar from './components/NavBar'
-import Cafe from './views/Cafe'
-import Me from './views/Me'
+import Timeline from './app/containers/Timeline'
+import Cafe from './app/containers/Cafe'
+import Me from './app/containers/Me'
+import Login from './app/components/Login'
+import TabIcon from './app/components/TabIcon'
+import NavBar from './app/components/NavBar'
+import {fetchTimeline, switchSegment, fetchTimelineIfNeeded} from './app/actions/timelineActions'
+import {TimelineSegments} from './app/actions/actionTypes'
+import rootReducer from './app/reducers/timeline'
 
 const styles = StyleSheet.create({
   tab: {
@@ -25,37 +32,59 @@ const styles = StyleSheet.create({
   }
 })
 
+const loggerMiddleware = createLogger()
+const createStoreWithMiddleware = applyMiddleware(
+  thunkMiddleware,
+  loggerMiddleware
+)(createStore)
+const store = createStoreWithMiddleware(rootReducer)
+console.log(store.getState())
+
+              // <Scene
+              //   title="我的关注"
+              //   key="timeline-favorite"
+              //   component={connect(state => ({topics: state.timeline[TimelineSegments.FAVORITE]}))(Timeline)}
+              //   navBar={connect(state => ({segment: state.segment}))(NavBar)}
+              //   segmentValues={['我的关注', '所有话题']}
+              //   />
+              // <Scene
+              //   title="所有话题"
+              //   key="timeline-all"
+              //   component={connect(state => ({topics: state.timeline[TimelineSegments.ALL]}))(Timeline)}
+              //   navBar={connect(state => ({segment: state.segment}))(NavBar)}
+              //   segmentValues={['我的关注', '所有话题']}
+              //   />
+
 class App extends React.Component {
-  _closeClick () {
-    console.log('close click');
-  }
 
   render () {
     return (
-      <Router>
-        <Scene key="home" tabs={true} default="topic" style={styles.tab}>
-          <Scene
-            segmentValues={['我的关注', '所有话题']}
-            key="topic"
-            title="首页"
-            icon={TabIcon}
-            component={Timeline}
-            titleStyle={{color:'white'}}
-            initial={true}
-            navBar={NavBar} />
-          <Scene key="discover"
-            title="发现"
-            navBar={NavBar}
-            icon={TabIcon}
-            component={Cafe} />
-          <Scene
-            key="me"
-            title="我的"
-            navBar={NavBar}
-            icon={TabIcon}
-            component={Me} />
-        </Scene>
-      </Router>
+      <Provider store={store}>
+        <Router>
+          <Scene key="home" tabs={true} default="topic" style={styles.tab}>
+            <Scene
+              title="首页"
+              navBar={connect(state => ({segment: state.segment}))(NavBar)}
+              segmentValues={['我的关注', '所有话题']}
+              component={Timeline}
+              key="timeline"
+              icon={TabIcon}
+              initial={true}
+              />
+            <Scene key="discover"
+              title="发现"
+              navBar={NavBar}
+              icon={TabIcon}
+              component={Cafe} />
+            <Scene
+              key="me"
+              title="我的"
+              navBar={NavBar}
+              icon={TabIcon}
+              component={Me} />
+          </Scene>
+        </Router>
+      </Provider>
     )
   }
 }
