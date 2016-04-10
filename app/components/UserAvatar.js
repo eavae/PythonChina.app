@@ -2,12 +2,22 @@ import React, {
   StyleSheet,
   Component,
   View,
-  Image
+  Image,
+  Text
 } from 'react-native'
 
 const styles = StyleSheet.create({
   image: {
 
+  },
+  wrap: {
+    backgroundColor: '#000',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  text: {
+    color: '#fff',
+    fontSize: 24
   }
 })
 
@@ -21,12 +31,30 @@ export default class UserAvatar extends Component {
   }
 
   render() {
+    if (this.props.url) {
+      return this.renderRoundImage()
+    }
+    else {
+      return this.renderDefaultImage()
+    }
+  }
+
+  renderRoundImage() {
     let uri = 'http:' + this.props.url
     return (
       <Image
         source={{uri: uri}}
         style={[this.props.style, {width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2}]}
       />
+    )
+  }
+
+  renderDefaultImage() {
+
+    return (
+      <View style={[styles.wrap, {width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2}]}>
+        <Text style={[styles.text]}>{this.props.username[0].toUpperCase() || 'P'}</Text>
+      </View>
     )
   }
 }

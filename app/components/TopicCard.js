@@ -129,9 +129,10 @@ export default class TopicCard extends Component {
           <View style={styles.headerLeft}>
             <UserAvatar
               url={data.user.avatarUrl}
+              username={data.user.username}
               size={46}/>
             <View style={styles.user}>
-              <Text style={styles.username}>{data.user.name}</Text>
+              <Text style={styles.username}>{data.user.username}</Text>
               <Text style={styles.publishday}>{createTime}</Text>
             </View>
           </View>
