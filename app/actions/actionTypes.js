@@ -15,3 +15,9 @@ export const TimelineSegments = {
   FAVORITE: 0,
   ALL: 1
 }
+
+// 权限验证
+export const INVALIDATE_AUTH = 'INVALIDATE_AUTH'
+export const REQUEST_LOGIN = 'REQUEST_LOGIN_AUTH'
+export const RECEIVE_LOGIN_SUCCESS = 'RECEIVE_LOGIN_SUCCESS'
+export const RECEIVE_LOGIN_FAIL = 'RECEIVE_LOGIN_FAIL'

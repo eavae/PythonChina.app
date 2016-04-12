@@ -48,7 +48,7 @@ export function receiveTimeline(segment, json) {
 }
 
 export function shouldFetchTimeline(state, segment) {
-  const topics = state.timeline[segment]
+  const topics = state.timeline.timeline[segment]
   if (!topics) {
     return true
   }
@@ -110,7 +110,8 @@ export function requestMoreTimeline(segment) {
  * @return {[type]}         [description]
  */
 export function shouldFetchMoreTimeline(state, segment) {
-  const topics = state.timeline[segment]
+  console.log(state)
+  const topics = state.timeline.timeline[segment]
   // 如果cursor存在并大于0，并且没有在获取中，则可以获取
   if (topics && topics.cursor && !topics.isFetching) {
     return true
@@ -121,6 +122,7 @@ export function shouldFetchMoreTimeline(state, segment) {
 }
 
 export function fetchMoreTimelineIfNeeded(segment) {
+  console.log(segment)
   return (dispatch, getState) => {
     if (shouldFetchMoreTimeline(getState(), segment)) {
       return dispatch(fetchMoreTimeline(segment))
@@ -135,7 +137,7 @@ export function fetchMoreTimeline(segment) {
   return (dispatch, getState) => {
     dispatch(requestMoreTimeline(segment))
 
-    const topics = getState().timeline[segment]
+    const topics = getState().timeline.timeline[segment]
 
     let url = TIMELINE_URL
     let searchParams = new URLSearchParams()

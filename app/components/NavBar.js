@@ -51,10 +51,20 @@ export default class NavBar extends Component {
     // 渲染按钮
     let buttons = {}
     if (hasBack) {
-      buttons.leftButton = <NavButton name="back" position="left"/>
+      buttons.leftButton = <NavButton name="back" position="left" onPress={this.props.back}/>
     }
     if (hasClose || hasEdit) {
-      buttons.rightButton = <NavButton name={hasClose ? 'close' : 'edit'} position="right"/>
+      let name
+      let callback
+      if (hasClose) {
+        name = 'close'
+        callback = this.props.close
+      }
+      else {
+        name = 'edit'
+        callback = this.props.edit
+      }
+      buttons.rightButton = <NavButton name={name} position="right" onPress={callback}/>
     }
 
     // 标题

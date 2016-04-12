@@ -1,4 +1,3 @@
-'use strict';
 import React, {
   Component,
   AppRegistry,
@@ -14,6 +13,7 @@ import React, {
 } from 'react-native'
 
 import {connect} from 'react-redux'
+import {Actions} from 'react-native-router-flux'
 
 import {TIMELINE_ALL_URL} from '../configs/url'
 import {TimelineSegments} from '../actions/actionTypes'
@@ -64,6 +64,7 @@ class Timeline extends Component{
   componentDidMount() {
     const {dispatch, segment} = this.props
     dispatch(fetchTimelineIfNeeded(segment))
+    setTimeout(() => Actions.login(), 2000)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -86,7 +87,6 @@ class Timeline extends Component{
   }
 
   onEndReached() {
-    console.log('reached')
     const {dispatch, segment} = this.props
     dispatch(fetchMoreTimelineIfNeeded(segment))
   }
@@ -150,7 +150,14 @@ class Timeline extends Component{
   }
 }
 
+// export default connent(state => {
+//   console.log(state)
+//   return {
+//     topics: state.timeline.timeline[]
+//   }
+// })
+
 export default connect(state => ({
-  topics: state.timeline[state.segment],
-  segment: state.segment
+  topics: state.timeline.timeline[state.timeline.segment],
+  segment: state.timeline.segment
 }))(Timeline)

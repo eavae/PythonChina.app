@@ -42,7 +42,7 @@ export default class NavButton extends Component {
 
     let name = nameMap[this.props.name]
     return (
-      <Button containerStyle={wrapStyle}>
+      <Button containerStyle={wrapStyle} onPress={this.props.onPress}>
         <Icon name={name} size={28} color="#0076FF" style={styles.icon} />
       </Button>
     )
@@ -50,6 +50,7 @@ export default class NavButton extends Component {
 
   static propTypes = {
     position: PropTypes.oneOf(['left', 'right']),
-    name: PropTypes.oneOf(['edit', 'back', 'close'])
+    name: PropTypes.oneOf(['edit', 'back', 'close']),
+    onPress: PropTypes.func.isRequired
   }
 }
