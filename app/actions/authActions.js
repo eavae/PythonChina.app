@@ -1,4 +1,5 @@
 import {camelizeKeys} from 'humps'
+import {Buffer} from 'buffer/'
 
 import {LOGIN_URL} from '../configs/url'
 import {
@@ -69,17 +70,22 @@ export function fetchLogin(username, password) {
   return (dispatch) => {
     dispatch(requestLogin())
 
-    let url = LOGIN_URL
-    console.log(username, password)
+    const url = LOGIN_URL
+    const buf = new Buffer(`${username}:${password}`)
+
     return fetch(url, {
       method: 'post',
       headers: {
         'Content-type': 'application/json',
-        'Authorization': 'Basic ' + btoa(`${username}:${password}`),
-        body: JSON.stringify({permanent:true})
-      }
+        'Authorization': 'Basic ' + buf.toString('base64'),
+      },
+      body: JSON.stringify({permanent:true}),
+      credentials: 'same-origin'
     })
-    .then(response => response.json())
+    .then(response => {
+      console.log(response)
+      return response.json()
+    })
     .then(json => {
       json = camelizeKeys(json)
 

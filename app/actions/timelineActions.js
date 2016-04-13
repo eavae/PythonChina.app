@@ -1,4 +1,5 @@
 import {camelizeKeys} from 'humps'
+import {stringify} from 'query-string'
 
 import {TIMELINE_URL} from '../configs/url'
 import {
@@ -76,15 +77,19 @@ export function fetchTimeline(segment) {
     dispatch(requestTimeline(segment))
 
     let url = TIMELINE_URL
-    let searchParams = new URLSearchParams()
+    let searchParams = {}
     if (segment === TimelineSegments.ALL) {
-      searchParams.append('show', 'all')
+      searchParams.show = 'all'
     }
 
-    return fetch(url + '?' + searchParams)
-      .then(response => response.json())
+    return fetch(url + '?' + stringify(searchParams))
+      .then(response => {
+        console.log(response)
+        return response.json()
+      })
       .then(json => {
         json = camelizeKeys(json)
+        console.log(json)
 
         // 派发接收到的数据
         dispatch(receiveTimeline(segment, json))
@@ -140,19 +145,21 @@ export function fetchMoreTimeline(segment) {
     const topics = getState().timeline.timeline[segment]
 
     let url = TIMELINE_URL
-    let searchParams = new URLSearchParams()
+    let searchParams = {}
     if (segment === TimelineSegments.ALL) {
-      searchParams.append('show', 'all')
+      searchParams.show = 'all'
     }
-    searchParams.append('cursor', topics.cursor)
+    searchParams.cursor = topics.cursor
 
-    return fetch(url + '?' + searchParams)
-      .then(response => response.json())
-      .then(json => {
-        json = camelizeKeys(json)
+    return fetch(url + '?' + stringify(searchParams), {
+      credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(json => {
+      json = camelizeKeys(json)
 
-        dispatch(receiveMoreTimeline(segment, json))
-      })
+      dispatch(receiveMoreTimeline(segment, json))
+    })
   }
 }
 

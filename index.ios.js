@@ -64,7 +64,7 @@ class App extends React.Component {
             key="root"
             hideNavBar={true}
           >
-            <Scene key="home" tabs={true} default="topic" style={styles.tab}
+            <Scene key="home" tabs={true} default="discover" style={styles.tab}
               initial={true}>
               <Scene
                 title="首页"
@@ -74,7 +74,9 @@ class App extends React.Component {
                 key="timeline"
                 icon={TabIcon}
                 />
-              <Scene key="discover"
+              <Scene
+                initial={true}
+                key="discover"
                 title="发现"
                 navBar={NavBar}
                 icon={TabIcon}
