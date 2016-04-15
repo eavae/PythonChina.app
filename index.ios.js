@@ -14,7 +14,7 @@ import createLogger from 'redux-logger'
 import {createStore, applyMiddleware} from 'redux'
 
 import Timeline from './app/containers/Timeline'
-import Cafe from './app/containers/Cafe'
+import CafeList from './app/containers/CafeList'
 import Me from './app/containers/Me'
 import Login from './app/containers/Login'
 import TabIcon from './app/components/TabIcon'
@@ -80,7 +80,7 @@ class App extends React.Component {
                 title="发现"
                 navBar={NavBar}
                 icon={TabIcon}
-                component={Cafe} />
+                component={CafeList} />
               <Scene
                 key="me"
                 title="我的"

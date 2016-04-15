@@ -15,7 +15,6 @@ import React, {
 import {connect} from 'react-redux'
 import {Actions} from 'react-native-router-flux'
 
-import {TIMELINE_ALL_URL} from '../configs/url'
 import {TimelineSegments} from '../actions/actionTypes'
 
 import {
@@ -64,7 +63,7 @@ class Timeline extends Component{
   componentDidMount() {
     const {dispatch, segment} = this.props
     dispatch(fetchTimelineIfNeeded(segment))
-    setTimeout(() => Actions.login(), 2000)
+    // setTimeout(() => Actions.login(), 2000)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -94,7 +93,7 @@ class Timeline extends Component{
   render () {
     let {topics} = this.props
     let child
-    if (topics && topics.cursor) {
+    if (topics && topics.items && topics.items.length > 0) {
       child = (
         <ListView
           onEndReachedThreshold={100}
